@@ -58,3 +58,6 @@ Be respectful and constructive. All contributors are expected to follow basic op
 ---
 
 Questions? Open a [Discussion](https://github.com/naveedin2024/OAuth2AuthorizationServer/discussions).
+
+© 2026 **Naveed Ali Mohammed**. All rights reserved.
+

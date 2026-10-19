@@ -6,7 +6,7 @@
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Spring Security](https://img.shields.io/badge/Spring_Security-6.x-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
 [![OAuth2](https://img.shields.io/badge/OAuth2-Authorization_Server-blue?style=for-the-badge&logo=auth0&logoColor=white)](https://spring.io/projects/spring-authorization-server)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+![Author](https://img.shields.io/badge/Author-Naveed_Ali_Mohammed-purple?style=for-the-badge)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 
 A **production-ready** OAuth2 Authorization Server built with Spring Boot 3 and Spring Authorization Server.  
@@ -227,16 +227,18 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for gu
 
 ---
 
-## 📄 License
+## 📄 License & Ownership
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+Copyright © 2026 **Naveed Ali Mohammed**. All rights reserved.
+Unauthorized copying or distribution of this project is prohibited.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [naveedin2024](https://github.com/naveedin2024)
+Made with ❤️ by **Naveed Ali Mohammed** · [GitHub](https://github.com/naveedin2024)
 
 ⭐ **Star this repo** if it helped you!
 
 </div>
+
