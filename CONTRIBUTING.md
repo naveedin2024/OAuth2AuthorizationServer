@@ -1,4 +1,4 @@
-﻿# Contributing to OAuth2 Authorization Server
+# Contributing to OAuth2 Authorization Server
 
 Thank you for your interest in contributing! 🎉
 
@@ -43,13 +43,15 @@ Thank you for your interest in contributing! 🎉
 
 ## Ideas for Contributions
 
+- [x] Docker & Docker Compose setup *(done!)*
+- [x] GitHub Actions CI pipeline *(done!)*
 - [ ] Database-backed `RegisteredClientRepository` (JPA/H2/PostgreSQL)
 - [ ] Database-backed `OAuth2AuthorizationService`
-- [ ] Docker & Docker Compose setup
-- [ ] GitHub Actions CI pipeline
-- [ ] Integration tests
+- [ ] Integration tests with `@SpringBootTest`
 - [ ] Custom login page (Thymeleaf)
 - [ ] Rate limiting on token endpoint
+- [ ] Redis-backed token store
+- [ ] PKCE demo client app
 
 ## Code of Conduct
 

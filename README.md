@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # 🔐 Spring Boot OAuth2 Authorization Server
 
@@ -15,6 +15,14 @@ Supports **Authorization Code**, **Client Credentials**, and **Refresh Token** g
 [🚀 Quick Start](#-quick-start) • [📖 Documentation](#-how-it-works) • [🧪 Testing](#-testing-the-server) • [🤝 Contributing](CONTRIBUTING.md)
 
 </div>
+
+---
+
+> [!NOTE]
+> **📚 Learning Purpose Disclaimer**  
+> This project is built and shared purely for **educational and learning purposes**.  
+> You are free to **use, clone, and reference** it in your own projects.  
+> The author is **not responsible** for any issues, damages, or misuse arising from the use of this code in any environment, including production.
 
 ---
 
@@ -81,9 +89,9 @@ Supports **Authorization Code**, **Client Credentials**, and **Refresh Token** g
 
 ### Prerequisites
 - Java 17+
-- Maven 3.6+
+- Maven 3.6+  *(or Docker — see below)*
 
-### 1. Clone & Run
+### Option A — Run with Maven
 
 ```bash
 git clone https://github.com/naveedin2024/OAuth2AuthorizationServer.git
@@ -91,9 +99,17 @@ cd OAuth2AuthorizationServer
 mvn spring-boot:run
 ```
 
+### Option B — Run with Docker 🐳
+
+```bash
+git clone https://github.com/naveedin2024/OAuth2AuthorizationServer.git
+cd OAuth2AuthorizationServer
+docker compose up --build
+```
+
 The server starts on **http://localhost:8091**
 
-### 2. Verify It Is Running
+### Verify It Is Running
 
 ```bash
 curl http://localhost:8091/.well-known/oauth-authorization-server
@@ -175,6 +191,19 @@ curl http://localhost:8091/oauth2/jwks
 
 ---
 
+## 🧰 Postman Collection
+
+A ready-to-use Postman collection is included to test all endpoints:
+
+📁 [`postman/OAuth2-Authorization-Server.postman_collection.json`](postman/OAuth2-Authorization-Server.postman_collection.json)
+
+**Import steps:**
+1. Open Postman → **Import** → select the file above
+2. Run **"2. Client Credentials Grant → Get Token (read scope)"** — the token is auto-saved
+3. Run downstream requests (Introspect, Revoke, etc.)
+
+---
+
 ## 🔧 Configuration
 
 Edit `src/main/resources/application.properties`:
@@ -227,10 +256,14 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for gu
 
 ---
 
-## 📄 License & Ownership
+## 📄 License & Disclaimer
 
 Copyright © 2026 **Naveed Ali Mohammed**. All rights reserved.
-Unauthorized copying or distribution of this project is prohibited.
+
+📚 **This project is intended for learning and educational purposes only.**  
+You are free to use, reference, or adapt this code in your own projects.  
+The author provides this project **as-is**, without warranty of any kind.  
+The author is **not responsible** for any damages, data loss, or security issues arising from the use of this code.
 
 ---
 

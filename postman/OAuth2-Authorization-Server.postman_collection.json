@@ -1,0 +1,213 @@
+{
+  "info": {
+    "name": "Spring OAuth2 Authorization Server",
+    "description": "Complete test collection for the Spring Boot OAuth2 Authorization Server.\nCovers: Client Credentials, Authorization Code, Token Introspection, JWKS, and OIDC UserInfo flows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",      "value": "http://localhost:8091", "type": "string" },
+    { "key": "client_id",     "value": "client",               "type": "string" },
+    { "key": "client_secret", "value": "secret",               "type": "string" },
+    { "key": "access_token",  "value": "",                     "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Discovery",
+      "item": [
+        {
+          "name": "OIDC Discovery Document",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/.well-known/openid-configuration",
+            "description": "Fetch the OpenID Connect discovery document listing all supported endpoints."
+          }
+        },
+        {
+          "name": "OAuth2 Authorization Server Metadata",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/.well-known/oauth-authorization-server",
+            "description": "RFC 8414 — Authorization Server Metadata."
+          }
+        },
+        {
+          "name": "JWKS — Public Keys",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/oauth2/jwks",
+            "description": "Fetch the JSON Web Key Set used to verify JWT signatures."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Client Credentials Grant",
+      "item": [
+        {
+          "name": "Get Token (read scope)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', json.access_token);",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('access_token present', () => pm.expect(json.access_token).to.not.be.undefined);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/oauth2/token",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{client_id}}" },
+                { "key": "password", "value": "{{client_secret}}" }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "scope",      "value": "read" }
+              ]
+            },
+            "description": "Obtain an access token using the Client Credentials grant.\nThe test script automatically saves the token to the `access_token` collection variable."
+          }
+        },
+        {
+          "name": "Get Token (read + admin scope)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', json.access_token);",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/oauth2/token",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{client_id}}" },
+                { "key": "password", "value": "{{client_secret}}" }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "scope",      "value": "read admin" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Token Introspection",
+      "item": [
+        {
+          "name": "Introspect Active Token",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/oauth2/introspect",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{client_id}}" },
+                { "key": "password", "value": "{{client_secret}}" }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "token", "value": "{{access_token}}" }
+              ]
+            },
+            "description": "Introspect the current access token to verify its status and claims."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Token Revocation",
+      "item": [
+        {
+          "name": "Revoke Token",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/oauth2/revoke",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{client_id}}" },
+                { "key": "password", "value": "{{client_secret}}" }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "token", "value": "{{access_token}}" }
+              ]
+            },
+            "description": "Revoke the current access token. After this call, the token will no longer be active."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Authorization Code Flow (Manual)",
+      "description": "This flow requires a browser. Steps are documented here as a guide.\n\n1. Open the Authorization URL in a browser.\n2. Login with user / password.\n3. Approve the consent screen.\n4. Copy the `code` from the redirect URL.\n5. Run the 'Exchange Code for Token' request below.",
+      "item": [
+        {
+          "name": "Authorization URL (open in browser)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/oauth2/authorize?response_type=code&client_id={{client_id}}&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/oidc-client&scope=openid profile read&state=random_state_xyz",
+              "query": [
+                { "key": "response_type", "value": "code" },
+                { "key": "client_id",     "value": "{{client_id}}" },
+                { "key": "redirect_uri",  "value": "http://127.0.0.1:8080/login/oauth2/code/oidc-client" },
+                { "key": "scope",         "value": "openid profile read" },
+                { "key": "state",         "value": "random_state_xyz" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Exchange Code for Token",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/oauth2/token",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{client_id}}" },
+                { "key": "password", "value": "{{client_secret}}" }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type",   "value": "authorization_code" },
+                { "key": "code",         "value": "PASTE_YOUR_CODE_HERE" },
+                { "key": "redirect_uri", "value": "http://127.0.0.1:8080/login/oauth2/code/oidc-client" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

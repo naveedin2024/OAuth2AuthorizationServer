@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # ─────────────────────────────────────────────────────────────
+  # OAuth2 Authorization Server  →  http://localhost:8091
+  # ─────────────────────────────────────────────────────────────
+  authorization-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oauth2-authorization-server
+    ports:
+      - "8091:8091"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8091
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8091/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - oauth2-network
+    restart: unless-stopped
+
+networks:
+  oauth2-network:
+    name: oauth2-network
+    driver: bridge
