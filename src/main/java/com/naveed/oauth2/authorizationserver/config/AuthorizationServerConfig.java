@@ -48,6 +48,7 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
 			throws Exception {
+		http.securityMatcher("/oauth2/**", "/.well-known/**", "/connect/**");
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
 			.oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
@@ -73,6 +74,8 @@ public class AuthorizationServerConfig {
 			throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
+				.requestMatchers("/api/messages/**").permitAll()
+				.requestMatchers("/").permitAll()
 				.anyRequest().authenticated()
 			)
 			// Form login handles the redirect to the login page from the
